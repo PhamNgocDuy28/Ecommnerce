@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main-content %}
+<!-- ========================= SECTION MAIN ========================= -->
+<div class="container-fluid p-0">
+    <video autoplay muted loop playsinline width="100%" height="auto">
+        <source src="{% static 'video/vd-nike1.mp4' %}" type="video/mp4">
+    </video>
+</div>
+    <!-- ========================= SECTION MAIN END// ========================= -->
+    
+    <!-- ========================= SECTION  ========================= -->
+    <section class="section-name padding-y-sm">
+    <div class="container">
+    
+    <header class="section-heading">
+        <a href="{% url 'store' %}" class="btn btn-outline-dark float-right">See all</a>
+        <h3 class="section-title">Popular products</h3>
+    </header><!-- sect-heading -->
+    
+        
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-3">
+            <div class="card card-product-grid">
+                <a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
+                <figcaption class="info-wrap">
+                    <a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+                    <div class="price mt-1">$ {{ product.price }}</div> <!-- price-wrap.// -->
+                </figcaption>
+            </div>
+        </div> <!-- col.// -->
+        {% endfor %}
+    </div> <!-- row.// -->
+    
+    </div><!-- container // -->
+    </section>
+    <!-- ========================= SECTION  END// ========================= -->
+{% endblock main-content %}
+
+
+
+
