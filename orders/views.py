@@ -45,7 +45,5 @@ def place_order(request,total=0,quantity=0):
             data.order_number = order_number
             data.save()
             return render(request, 'orders/payments.html', {'form': form})
-        # Trong trường hợp dữ liệu biểu mẫu không hợp lệ, bạn có thể trả về một trang render lại biểu mẫu với các thông báo lỗi
     else:
           return redirect('checkout')
-    # Trong trường hợp request không phải là phương thức POST, bạn có thể trả về một trang render lại biểu mẫu
