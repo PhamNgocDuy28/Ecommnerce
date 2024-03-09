@@ -2,14 +2,16 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from carts.models import CartItem
 from .forms import OrderForm
-from .models import Order
+from .models import Order, Payment
 import datetime
-
+from django.contrib.auth.decorators import login_required
+import json
 
 # Create your views here.
 def payments(request):
     return render(request, 'orders/payments.html')
-    
+
+@login_required(login_url='login')  
 def place_order(request,total=0,quantity=0):
     current_user = request.user
 
@@ -44,6 +46,17 @@ def place_order(request,total=0,quantity=0):
             order_number = current_date + str(data.id)
             data.order_number = order_number
             data.save()
-            return render(request, 'orders/payments.html', {'form': form})
+
+            order = Order.objects.get(user=current_user, is_ordered=False, order_number=order_number)
+            context = {
+                'order': order,
+                'cart_item': cart_item,
+                'total': total,
+                'tax': tax,
+                'grand_total': grand_total,
+                'quantity': quantity,
+                'cart_items': cart_items,
+            }
+            return render(request, 'orders/payments.html', context)
     else:
           return redirect('checkout')
