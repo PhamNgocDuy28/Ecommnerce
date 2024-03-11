@@ -1,12 +1,15 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from carts.models import CartItem
+from store.models import Product
 from .forms import OrderForm
 from .models import Order, OrderProduct, Payment
 import datetime
 from django.contrib.auth.decorators import login_required
 import json
 
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 # Create your views here.
 def payments(request):
     body = json.loads(request.body)
@@ -43,6 +46,21 @@ def payments(request):
         orderproduct = OrderProduct.objects.get(id=orderproduct.id)
         orderproduct.variations.set(product_variation)
         orderproduct.save()
+
+        product = Product.objects.get(id=item.product_id)
+        product.stock -= item.quantity
+        product.save()
+        
+    CartItem.objects.filter(user=request.user).delete()
+
+    mail_subject = 'Thank you for your order!'
+    message = render_to_string('orders/order_recieved_email.html', {
+                'user': request.user,
+                'order': order,
+            })
+    to_email = request.user.email
+    send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.send()
 
 
     return render(request, 'orders/payments.html')
