@@ -23,6 +23,11 @@
 
 		<h2 class="title">{{ single_product.product_name }}</h2>
 		
+		{{single_product.averageReview}} <i class="bi bi-star-fill text-warning"></i>
+		<br>
+		{{single_product.countReview}} review
+		
+		
 		<div class="mb-3"> 
 			<var class="price h4">$ {{ single_product.price }}</var> 
 		</div> 
@@ -57,6 +62,7 @@
 				<form action="{% url 'submit_review' single_product.id %}" method="POST">
 					{% csrf_token %}
 					<h5>Write Your Review</h5>
+					Total review: {{single_product.averageReview}} <i class="bi bi-star-fill text-warning"></i>
 					<div>
 						<label>How do you rate this product?</label>
 						<br>
@@ -108,53 +114,22 @@
 				<header class="section-heading">
 					<strong>Reviews </strong>  
 				</header>
+                
+				{% for review in reviews %}
 				<article class="box mb-3">
 					<div class="icontext w-100">
-						<img src="./images/avatars/avatar1.jpg" class="img-xs icon rounded-circle">
 						<div class="text">
-							<span class="date text-muted float-md-right">24.04.2020 </span>  
-							<h6 class="mb-1">Mike John </h6>
-							
+							<span class="date text-muted float-md-right">{{review.updated_at}}</span>  
+							<h6 class="mb-1">{{review.user.full_name}}</h6>
+							{{review.rating}} <i class="bi bi-star-fill text-warning"></i>
 						</div>
 					</div> <!-- icontext.// -->
 					<div class="mt-3">
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>
-						<p>
-							Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-							quis nostrud exercitation ullamco laboris nisi ut aliquip
-						</p>	
+						<h6>{{review.subject}}</h6>
+						<p>{{review.review}}</p>
 					</div>
 				</article>
+				{% endfor %}
 				</div> <!-- col.// -->
 		</article> <!-- product-info-aside .// -->
 </div>
