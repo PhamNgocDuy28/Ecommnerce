@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main-content %}
+<section class="section-conten padding-y bg">
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div id="message" class="container">
+          <div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert" >
+              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">x</span></button>
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                  {{message}}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+    <div class="container">
+        <div class="row">
+        <aside class="col-md-3">
+            {% include 'includes/dashboard_sitebar.html' %}
+        </aside>
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <strong class="d-inline-block mr-3">Your order history</strong>
+            </header>
+            <div class="card-body">
+                <div class="row"> 
+
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Order #</th>
+                                <th scope="col">Billing Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Order Total</th>
+                                <th scope="col">Date</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for order in orders %}
+                              <tr>
+                                <th scope="row">{{order.order_number}}</th>
+                                <td>{{order.full_name}}</td>
+                                <td>{{order.phone}}</td>
+                                <td>{{order.order_total}}</td>
+                                <td>{{order.created_at}}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+
+                </div> <!-- row.// -->
+            </div> <!-- card-body .// -->
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+    
+{% endblock main-content %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main-content %}
+<section class="section-conten padding-y bg">
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div id="message" class="container">
+          <div {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %} role="alert" >
+              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">x</span></button>
+                  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                  {{message}}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+    <div class="container">
+        <div class="row">
+        <aside class="col-md-3">
+            {% include 'includes/dashboard_sitebar.html' %}
+        </aside>
+        <main class="col-md-9">
+            <article class="card">
+            <header class="card-header">
+                <strong class="d-inline-block mr-3">Edit your profile</strong>
+            </header>
+            <div class="card-body">
+                <div class="text-center">
+                    <img src="{{userprofile.profile_picture.url}}" alt="Profile Picture" width="100" style="border-radius:50px;">
+                </div>
+                <br>
+                <div class="row"> 
+                    <div class="col-md-12">
+                        <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>First Name</label>
+                                    {{user_form.first_name}}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Last Name</label>
+                                    {{user_form.last_name}}
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Phone Number</label>
+                                    {{user_form.phone_number}}
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Profile Picture</label>
+                                    {{profile_form.profile_picture}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Addess Line 1</label>
+                                {{profile_form.address_line_1}}
+                            </div>
+                            <div class="form-group">
+                                <label>Addess Line 2</label>
+                                {{profile_form.address_line_2}}
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>City</label>
+                                    {{profile_form.city}}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>State</label>
+                                    {{profile_form.state}}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Country</label>
+                                    {{profile_form.country}}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+
+                </div> <!-- row.// -->
+            </div> <!-- card-body .// -->
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+    
+{% endblock main-content %}

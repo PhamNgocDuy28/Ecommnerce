@@ -63,16 +63,20 @@ def product_detail(request, category_slug, product_slug):
     return render(request, 'store/product_detail.html', context)
 
 def search(request):
-    if 'keyword' in request.GET:
-        keyword = request.GET['keyword']
-        if keyword == 0:
-            return render(request, 'store/store.html')
-        else:
-            products = Product.objects.order_by('-create_date').filter(Q(description__icontains=keyword) | Q(product_name__icontains = keyword))
-            product_count = products.count()
+    keyword = request.GET.get('keyword', '')
+    products = Product.objects.order_by('-create_date')
+
+    if keyword:
+        products = products.filter(Q(product_name__icontains=keyword))
+        product_count = products.count()
+    else:
+        product_count = products.count()
+        # Xử lý khi không có từ khóa, ví dụ: hiển thị tất cả sản phẩm
+
     context = {
         'products': products,
-        'product_count':product_count,
+        'product_count': product_count,
+        'keyword': keyword,  # Truyền từ khóa tìm kiếm vào context để hiển thị lại trong giao diện người dùng
     }
     return render(request, 'store/store.html', context)
 
