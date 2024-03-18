@@ -49,6 +49,16 @@ def register(request):
 
             # messages.success(request, 'Thanks you for registering with us. We have sent you a verification email to your email address')
             return redirect('/accounts/login/?command=verification&email='+email)
+        else:
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            re_password = request.POST.get('re_password')
+            if Account.objects.filter(email=email).exists():
+                messages.error(request, 'Your email already exists')
+                return redirect('register')
+            if  password != re_password:
+                messages.error(request, 'Your password not match')
+                return redirect('register')
     else:
         form = RegistrationForm()
     context = {
@@ -161,10 +171,8 @@ def dashboard(request):
     orders = Order.objects.order_by('-created_at').filter(user_id=request.user.id, is_ordered=True)
     order_count = orders.count()
 
-    userprofile = UserProfile.objects.get(user_id=request.user.id)
     context = {
         'order_count': order_count,
-        'userprofile': userprofile,
     }
     return render(request, 'accounts/dashboard.html', context)
 
