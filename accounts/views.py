@@ -18,30 +18,30 @@ from django.core.mail import EmailMessage
 
 from carts.views import _cart_id
 import requests
-import re
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
             phone_number = form.cleaned_data['phone_number']
-            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            username = email.split("@")[0]
-            user = Account.objects.create(first_name=first_name, last_name=last_name,email=email,username=username,password=password)
+            hashed_password = make_password(password)
             if Account.objects.filter(phone_number=phone_number).exists():
                 messages.error(request, 'Your phone number already exists')
                 return redirect('register')
             elif len(password) < 8:
                 messages.error(request, 'Password must be at least 8 characters long')
                 return redirect('register')
-            elif not re.search("[a-z]", password) or not re.search("[A-Z]", password) or not re.search("[0-9]", password) or not re.search("[!@#$%^&*]", password):
-                messages.error(request, 'Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (!@#$%^&*)')
-                return redirect('register')
             else:
+                first_name = form.cleaned_data['first_name']
+                last_name = form.cleaned_data['last_name']
+                phone_number = form.cleaned_data['phone_number']
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                username = email.split("@")[0]
+                user = Account.objects.create(first_name=first_name, last_name=last_name,email=email,username=username,password=hashed_password)
                 user.phone_number = phone_number
                 user.save()
 
