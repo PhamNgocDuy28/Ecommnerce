@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -20,10 +20,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$v1o%aqaeg6g#r86$cc)+q83b_us_8zh-!vb$(n!o(@ycz0!g2'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -139,9 +139,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Địa chỉ SMTP của Google
-EMAIL_PORT = 587  # Cổng SMTP của Google
-EMAIL_USE_TLS = True  # Sử dụng TLS cho tính bảo mật
-EMAIL_HOST_USER = 'bboyphamduy1@gmail.com'  # Thay bằng địa chỉ email của bạn
-EMAIL_HOST_PASSWORD = 'kmez nbxc mqjy oooy' 
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST') 
+EMAIL_PORT = config('EMAIL_PORT', cast=int)  
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)  
+EMAIL_HOST_USER = config('EMAIL_HOST_USER') 
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD') 
