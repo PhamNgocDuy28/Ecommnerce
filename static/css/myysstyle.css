@@ -1,0 +1,3 @@
+.box-scroll::-webkit-scrollbar {
+    width: 0px; /* Độ rộng của thanh cuộn */
+}

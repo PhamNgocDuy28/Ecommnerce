@@ -10,11 +10,17 @@
 <div class="row no-gutters">
 
 	<aside class="col-md-6">
-	<div class="img-big-wrap">
-	   <a href="#"><img width="100%" src="{{ single_product.images.url }}" style="border-radius:10px"></a>
+	<div class="img-big-wrap mainImage">
+	   <center><img width="100%" src="{{ single_product.images.url }}" style="border-radius:10px"></center>
 	</div>
 	</aside>
-
+	<ul class="thumb p-0 m-0" style="list-style:none">
+		<li>
+			{% for i in product_gallery %}
+			<a href="{{i.image.url}}" target="mainImage"><img src="{{i.image.url}}" alt="Product Image"></a>
+			{% endfor %}
+		</li>
+	</ul>
 <main class="col-md-6">
 <form action="{% url 'add_cart' single_product.id %}" method="POST">
 {% csrf_token %}

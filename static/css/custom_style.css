@@ -1,0 +1,46 @@
+.rate > input {
+    display: none;
+}
+
+.rate {
+    display: inline-block;
+    border: 0;
+    position: relative; /* Sử dụng position: relative để tạo ngữ cảnh cho các sao */
+}
+
+.rate > label {
+    float: right;
+    position: relative; /* Sử dụng position: relative để tạo ngữ cảnh cho các label */
+}
+
+.rate > label:before {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-family: FontAwesome;
+    content: "\f005";
+    margin: 0;
+    padding: 0.3rem .2rem;
+    cursor: pointer;
+}
+
+.rate .half:before {
+    content: "\f089";
+    position: absolute; /* Sử dụng position: absolute để đặt các sao "half" */
+    top: 0; /* Đặt vị trí ở trên cùng của sao cha */
+    left: 0; /* Đặt vị trí ở bên trái của sao cha */
+}
+
+input:checked ~ label,
+label:hover ~ label {
+    color: #ffb503;
+}
+
+.small-image {
+    max-width: 50px; /* Đặt kích thước tối đa cho hình ảnh nhỏ */
+    position: absolute; /* Đặt vị trí tuyệt đối để có thể điều chỉnh vị trí */
+    bottom: 0; /* Đặt vị trí dưới cùng của hình ảnh */
+    left: 0; /* Đặt vị trí bên trái của hình ảnh */
+    margin: 10px; /* Đặt lề giữa các hình ảnh nhỏ */
+    border: 1px solid #cdcdcd;
+    border-radius: 10px ;
+}
