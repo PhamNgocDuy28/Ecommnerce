@@ -21,6 +21,8 @@ import requests
 from django.contrib.auth.hashers import make_password
 
 # Create your views here.
+def is_digit(s):
+    return s.isdigit()
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -33,6 +35,9 @@ def register(request):
                 return redirect('register')
             elif len(password) < 8:
                 messages.error(request, 'Password must be at least 8 characters long')
+                return redirect('register')
+            elif not all(is_digit(c) for c in phone_number):
+                messages.error(request, 'Phone number must contain only digits')
                 return redirect('register')
             else:
                 first_name = form.cleaned_data['first_name']
